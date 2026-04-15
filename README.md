@@ -95,12 +95,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-## 🌐 Deployment (Vercel)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
-1. Connect your GitHub repository to Vercel.
-2. In the deployment settings, make sure to add all three environment variables (`NEXT_PUBLIC_TMDB_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
-3. Click "Deploy".
 
 ---
 *Created with ❤️ for movie enthusiasts.*
