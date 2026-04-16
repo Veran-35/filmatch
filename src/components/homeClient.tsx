@@ -69,7 +69,7 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
       <FilmModal movieId={selectedId} onClose={() => setSelectedId(null)} />
 
       {/* ── HERO ── */}
-      <section className="relative w-full min-h-[90svh] md:min-h-[88vh] flex items-end px-4 md:px-10 pt-28 pb-10 md:pb-20 overflow-hidden">
+      <section className="relative flex flex-col justify-end w-full min-h-[85vh] md:min-h-[88vh] px-4 md:px-10 pt-20 pb-6 md:pb-20 overflow-hidden">
         {heroBackdrop && (
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-700"
@@ -85,7 +85,7 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
               <span className="inline-block w-5 h-px bg-amber-400" />
               Now Playing
             </p>
-            <h1 className="font-display text-[clamp(32px,8vw,76px)] leading-[1.1] md:leading-[0.94] tracking-wide mb-3 drop-shadow-2xl">
+            <h1 className="font-display text-[clamp(32px,10vw,76px)] leading-none md:leading-[0.94] tracking-wide mb-2 md:mb-3 drop-shadow-2xl">
               {hero.title.toUpperCase()}
             </h1>
             <div className="flex items-center gap-3 text-sm text-white/50 mb-3 flex-wrap">
@@ -95,10 +95,10 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
               <span>·</span>
               <span>{hero.vote_count.toLocaleString('en-US')} votes</span>
             </div>
-            <p className="text-sm text-white/60 font-light leading-relaxed max-w-md mb-6 line-clamp-3">
+            <p className="text-sm text-white/60 font-light leading-snug md:leading-relaxed max-w-md mb-4 md:mb-6 line-clamp-2 md:line-clamp-3">
               {hero.overview}
             </p>
-            <div className="flex flex-wrap gap-3 mt-6">
+            <div className="flex flex-wrap gap-3 mt-4 md:mt-6">
               <button
                 onClick={() => setSelectedId(hero.id)}
                 className="flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white text-sm font-medium px-6 py-3 rounded transition-colors cursor-pointer w-full sm:w-auto justify-center"
