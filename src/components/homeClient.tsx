@@ -69,7 +69,7 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
       <FilmModal movieId={selectedId} onClose={() => setSelectedId(null)} />
 
       {/* ── HERO ── */}
-      <section className="relative h-[88vh] min-h-130 flex items-end px-10 pb-20 overflow-hidden">
+      <section className="relative h-[88vh] min-h-[500px] md:min-h-130 flex items-end px-4 md:px-10 pb-10 md:pb-20 overflow-hidden">
         {heroBackdrop && (
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-700"
@@ -118,8 +118,8 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
 
       {/* ── TRENDING ── */}
       {trending.length > 0 && (
-        <section className="px-10 py-12">
-          <h2 className="font-display text-3xl tracking-wider mb-6">
+        <section className="px-4 md:px-10 py-8 md:py-12">
+          <h2 className="font-display text-2xl md:text-3xl tracking-wider mb-4 md:mb-6">
             TRENDING THIS WEEK
           </h2>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
@@ -159,8 +159,8 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
       )}
 
       {/* ── BROWSE ── */}
-      <section id="browse" className="px-10 py-12 border-t border-white/5">
-        <h2 className="font-display text-3xl tracking-wider mb-6">
+      <section id="browse" className="px-4 md:px-10 py-8 md:py-12 border-t border-white/5">
+        <h2 className="font-display text-2xl md:text-3xl tracking-wider mb-4 md:mb-6">
           BROWSE FILMS
         </h2>
 
@@ -216,7 +216,7 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
 
         {/* Film grid */}
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
             {Array.from({ length: 10 }).map((_, i) => (
               <div key={i} className="animate-pulse">
                 <div className="aspect-[2/3] rounded-lg bg-white/5 mb-2" />
@@ -225,7 +225,7 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
             {films.map((movie) => (
               <div
                 key={movie.id}
@@ -278,7 +278,7 @@ export default function HomeClient({ initialHero, initialTrending, initialFilms 
       </section>
 
       {/* Footer */}
-      <footer className="px-10 py-8 border-t border-white/5 text-center text-white/20 text-xs">
+      <footer className="px-4 md:px-10 py-6 md:py-8 border-t border-white/5 text-center text-white/20 text-xs">
         <p>FilMatch — Powered by TMDB</p>
       </footer>
     </>

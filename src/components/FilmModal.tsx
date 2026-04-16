@@ -74,7 +74,7 @@ export default function FilmModal({ movieId, onClose }: Props) {
         </div>
 
         {/* Body */}
-        <div className="px-7 pb-7">
+        <div className="px-5 md:px-7 pb-5 md:pb-7">
           {loading && (
             <div className="space-y-3 py-4">
               {[80, 50, 100, 70].map((w, i) => (
@@ -85,7 +85,7 @@ export default function FilmModal({ movieId, onClose }: Props) {
 
           {movie && (
             <>
-              <h2 className="font-display text-4xl tracking-wider leading-none mb-3">
+              <h2 className="font-display text-3xl md:text-4xl tracking-wider leading-none mb-3">
                 {movie.title.toUpperCase()}
               </h2>
 

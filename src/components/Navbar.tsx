@@ -52,7 +52,7 @@ export default function Navbar({ onSearch }: Props) {
   }
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10 h-16 transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-10 h-16 transition-all duration-300 ${
       scrolled ? 'bg-[#080808]/95 backdrop-blur-md border-b border-white/5' : 'bg-gradient-to-b from-[#080808]/90 to-transparent'
     }`}>
       {/* Logo */}
@@ -69,7 +69,7 @@ export default function Navbar({ onSearch }: Props) {
             value={searchVal}
             onChange={e => handleSearchInput(e.target.value)}
             placeholder="Search films…"
-            className="bg-white/6 border border-white/10 rounded-md text-[#f0ede6] text-sm px-4 pr-9 py-2 w-52 focus:w-72 focus:border-red-500 outline-none transition-all duration-300 placeholder:text-white/30"
+            className="bg-white/6 border border-white/10 rounded-md text-[#f0ede6] text-sm px-4 pr-9 py-2 w-32 focus:w-48 md:w-52 md:focus:w-72 focus:border-red-500 outline-none transition-all duration-300 placeholder:text-white/30"
           />
           <Search size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
         </div>

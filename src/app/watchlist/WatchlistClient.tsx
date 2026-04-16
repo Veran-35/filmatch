@@ -28,13 +28,13 @@ export default function WatchlistClient({ watchlist: initial, ratings, userId }:
   const items = activeTab === 'watchlist' ? watchlist : ratings
 
   return (
-    <main className="min-h-screen bg-[#080808] pt-24 px-6 pb-16 max-w-5xl mx-auto">
+    <main className="min-h-screen bg-[#080808] pt-20 md:pt-24 px-4 md:px-6 pb-10 md:pb-16 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <Link href="/" className="text-sm text-white/30 hover:text-white/60 transition-colors mb-4 inline-block">
           ← Back to Browse
         </Link>
-        <h1 className="font-display text-5xl tracking-wider text-[#f0ede6]">MY FILMS</h1>
+        <h1 className="font-display text-4xl md:text-5xl tracking-wider text-[#f0ede6]">MY FILMS</h1>
       </div>
 
       {/* Tabs */}
@@ -79,7 +79,7 @@ export default function WatchlistClient({ watchlist: initial, ratings, userId }:
 
       {/* Grid */}
       {items.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
           {activeTab === 'watchlist' && watchlist.map(item => {
             const poster = posterUrl(item.movie_poster, 'w342')
             const userRating = ratingMap[item.movie_id]
