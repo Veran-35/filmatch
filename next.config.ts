@@ -1,13 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Memberitahu Next.js untuk mem-build HTML statis
-  output: "export",
+  // Tidak bisa menggunakan output: "export" karena proyek ini menggunakan
+  // Supabase SSR (Server-Side Rendering) dan cookies().
+  // GitHub Pages hanya mendukung Static HTML, bukan Next.js SSR.
   
-  // Menyesuaikan path dengan nama repository Anda
-  basePath: "/filmatch",
-  
-  // Mematikan optimasi gambar bawaan Next.js (wajib untuk static export)
   images: {
     unoptimized: true, 
   },
