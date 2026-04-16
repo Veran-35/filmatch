@@ -1,8 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  // Memberitahu Next.js untuk mem-build HTML statis
+  output: "export",
+  
+  // Menyesuaikan path dengan nama repository Anda
+  basePath: "/filmatch",
+  
+  // Mematikan optimasi gambar bawaan Next.js (wajib untuk static export)
+  images: {
+    unoptimized: true, 
+  },
 };
 
 export default nextConfig;
