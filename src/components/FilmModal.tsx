@@ -7,6 +7,7 @@ import { backdropUrl } from '@/lib/tmdb'
 import type { TMDBMovieDetail, TMDBCredits } from '@/types'
 import WatchlistButton from './WatchlistButton'
 import StarRating from './StarRating'
+import CommentSection from './CommentSection'
 
 interface Props {
   movieId: number | null
@@ -148,6 +149,9 @@ export default function FilmModal({ movieId, onClose }: Props) {
                   TMDB →
                 </a>
               </div>
+
+              {/* Comment Section */}
+              <CommentSection movieId={movie.id} />
             </>
           )}
         </div>

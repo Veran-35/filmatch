@@ -82,14 +82,14 @@ export default function Navbar({ onSearch }: Props) {
               className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors cursor-pointer"
             >
               <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 font-medium text-xs">
-                {(user.email?.[0] ?? 'U').toUpperCase()}
+                {((user.user_metadata?.username || user.email)?.[0] ?? 'U').toUpperCase()}
               </div>
               <ChevronDown size={14} className={`transition-transform ${dropOpen ? 'rotate-180' : ''}`} />
             </button>
             {dropOpen && (
               <div className="absolute right-0 top-11 w-44 bg-[#1a1a1a] border border-white/8 rounded-lg overflow-hidden shadow-xl">
                 <div className="px-4 py-2.5 border-b border-white/6">
-                  <p className="text-xs text-white/40 truncate">{user.email}</p>
+                  <p className="text-xs text-white/40 truncate">{user.user_metadata?.username || (user.email ? user.email.split('@')[0] : 'User')}</p>
                 </div>
                 <Link
                   href="/watchlist"

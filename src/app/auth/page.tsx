@@ -7,6 +7,7 @@ import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
 
 export default function AuthPage() {
   const [mode, setMode]       = useState<'login' | 'register'>('login')
+  const [username, setUsername] = useState('')
   const [email, setEmail]     = useState('')
   const [password, setPassword] = useState('')
   const [showPw, setShowPw]   = useState(false)
@@ -26,7 +27,13 @@ export default function AuthPage() {
       router.push('/')
       router.refresh()
     } else {
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          data: { username: username.trim() || email.split('@')[0] }
+        }
+      })
       if (error) { setError(error.message); setLoading(false); return }
       setSuccess('Check your email to confirm your account!')
     }
@@ -66,6 +73,20 @@ export default function AuthPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Username (Only for register) */}
+            {mode === 'register' && (
+              <div className="relative">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none text-xs font-bold">@</div>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  placeholder="Username (optional)"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg text-[#f0ede6] text-sm pl-10 pr-4 py-3 outline-none focus:border-red-500 transition-colors placeholder:text-white/25"
+                />
+              </div>
+            )}
+
             {/* Email */}
             <div className="relative">
               <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />

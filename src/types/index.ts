@@ -56,3 +56,12 @@ export interface GenreFilter {
   id: number | ''
   name: string
 }
+
+export interface Comment {
+  id: string
+  user_id: string
+  movie_id: number
+  content: string
+  created_at: string
+  profiles?: Profile | null
+}
