@@ -3,6 +3,7 @@
 import { useEffect, useState, FormEvent } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
+import { MoreVertical, Edit2, Trash2 } from 'lucide-react'
 import type { Comment } from '@/types'
 
 interface Props {
@@ -14,6 +15,12 @@ export default function CommentSection({ movieId }: Props) {
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+  
+  // Edit & Menu States
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
+  const [editContent, setEditContent] = useState('')
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
+
   const { user } = useAuth()
   const supabase = createClient()
 
@@ -55,6 +62,38 @@ export default function CommentSection({ movieId }: Props) {
       console.error("Error inserting comment:", error)
     }
     setSubmitting(false)
+  }
+
+  async function handleUpdate(commentId: string) {
+    if (!user || !editContent.trim()) return
+
+    const { error } = await supabase
+      .from('comments')
+      .update({ content: editContent.trim() })
+      .eq('id', commentId)
+      .eq('user_id', user.id)
+
+    if (!error) {
+      setEditingCommentId(null)
+      loadComments()
+    } else {
+      console.error("Error updating comment:", error)
+    }
+  }
+
+  async function handleDelete(commentId: string) {
+    if (!user) return
+    const { error } = await supabase
+      .from('comments')
+      .delete()
+      .eq('id', commentId)
+      .eq('user_id', user.id)
+    
+    if (!error) {
+      loadComments()
+    } else {
+      console.error("Error deleting comment:", error)
+    }
   }
 
   return (
@@ -112,15 +151,84 @@ export default function CommentSection({ movieId }: Props) {
                 className="w-10 h-10 rounded-full object-cover border border-white/10 shrink-0"
               />
               <div className="flex-1 bg-[#1a1a1a]/50 border border-white/5 rounded-lg p-4">
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="font-semibold text-sm text-white/90">
-                    {comment.profiles?.username || 'Anonymous'}
-                  </span>
-                  <span className="text-xs text-white/30">
-                    {new Date(comment.created_at).toLocaleDateString()}
-                  </span>
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-semibold text-sm text-white/90">
+                      {comment.profiles?.username || 'Anonymous'}
+                    </span>
+                    <span className="text-xs text-white/30">
+                      {new Date(comment.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                  
+                  {user?.id === comment.user_id && (
+                    <div className="relative">
+                      <button 
+                        onClick={() => setOpenMenuId(openMenuId === comment.id ? null : comment.id)}
+                        className="p-1 rounded hover:bg-white/5 transition-colors"
+                      >
+                        <MoreVertical className="w-4 h-4 text-white/50 hover:text-white" />
+                      </button>
+                      
+                      {openMenuId === comment.id && (
+                        <>
+                          <div 
+                            className="fixed inset-0 z-10"
+                            onClick={() => setOpenMenuId(null)}
+                          />
+                          <div className="absolute right-0 mt-1 w-32 bg-[#2a2a2a] shadow-xl border border-white/10 rounded-md overflow-hidden z-20">
+                            <button
+                              onClick={() => {
+                                setEditingCommentId(comment.id)
+                                setEditContent(comment.content)
+                                setOpenMenuId(null)
+                              }}
+                              className="w-full text-left px-3 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white flex items-center gap-2"
+                            >
+                              <Edit2 className="w-3 h-3" /> Edit
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleDelete(comment.id)
+                                setOpenMenuId(null)
+                              }}
+                              className="w-full text-left px-3 py-2 text-xs text-red-500/70 hover:bg-red-500/10 hover:text-red-500 flex items-center gap-2"
+                            >
+                              <Trash2 className="w-3 h-3" /> Delete
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm text-white/70 whitespace-pre-wrap leading-relaxed">{comment.content}</p>
+                
+                {editingCommentId === comment.id ? (
+                  <div className="mt-2">
+                    <textarea
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:outline-none focus:border-amber-400/50 resize-y min-h-[60px]"
+                    />
+                    <div className="flex justify-end gap-2 mt-2">
+                      <button
+                        onClick={() => setEditingCommentId(null)}
+                        className="px-3 py-1.5 text-xs text-white/50 hover:text-white transition-colors cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => handleUpdate(comment.id)}
+                        disabled={!editContent.trim() || editContent.trim() === comment.content}
+                        className="bg-amber-400 hover:bg-amber-500 text-black font-semibold text-xs px-3 py-1.5 rounded transition-colors disabled:opacity-50 cursor-pointer"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-white/70 whitespace-pre-wrap leading-relaxed">{comment.content}</p>
+                )}
               </div>
             </div>
           ))
