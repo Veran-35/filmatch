@@ -15,7 +15,7 @@ export default function CommentSection({ movieId }: Props) {
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
-  
+
   // Edit & Menu States
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
   const [editContent, setEditContent] = useState('')
@@ -35,7 +35,7 @@ export default function CommentSection({ movieId }: Props) {
       .select('*, profiles:user_id(username, avatar_url)')
       .eq('movie_id', movieId)
       .order('created_at', { ascending: false })
-    
+
     if (!error && data) {
       setComments(data as any as Comment[])
     }
@@ -69,7 +69,7 @@ export default function CommentSection({ movieId }: Props) {
 
     // Optimistic update
     const previousComments = [...comments];
-    setComments(comments.map(c => 
+    setComments(comments.map(c =>
       c.id === commentId ? { ...c, content: editContent.trim() } : c
     ));
     setEditingCommentId(null);
@@ -83,7 +83,7 @@ export default function CommentSection({ movieId }: Props) {
         .select();
 
       if (error) throw error;
-      
+
       if (!data || data.length === 0) {
         setComments(previousComments);
         alert("Failed to update comment. Please check your Supabase UPDATE policy.");
@@ -109,7 +109,7 @@ export default function CommentSection({ movieId }: Props) {
         .eq('id', commentId)
         .eq('user_id', user.id)
         .select();
-      
+
       if (error) throw error;
 
       if (!data || data.length === 0) {
@@ -127,7 +127,7 @@ export default function CommentSection({ movieId }: Props) {
   return (
     <div className="mt-8 border-t border-white/10 pt-6">
       <h3 className="text-xl font-display mb-4 font-bold tracking-wider text-white/90">COMMENTS</h3>
-      
+
       {/* Comment Form */}
       {user ? (
         <form onSubmit={handleSubmit} className="mb-8">
@@ -188,19 +188,19 @@ export default function CommentSection({ movieId }: Props) {
                       {new Date(comment.created_at).toLocaleDateString()}
                     </span>
                   </div>
-                  
+
                   {user?.id === comment.user_id && (
                     <div className="relative">
-                      <button 
+                      <button
                         onClick={() => setOpenMenuId(openMenuId === comment.id ? null : comment.id)}
                         className="p-1 rounded hover:bg-white/5 transition-colors"
                       >
-                        <MoreVertical className="w-4 h-4 text-white/50 hover:text-white" />
+                        <MoreVertical className="w-4 h-4 text-white/50 hover:text-white cursor-pointer" />
                       </button>
-                      
+
                       {openMenuId === comment.id && (
                         <>
-                          <div 
+                          <div
                             className="fixed inset-0 z-10"
                             onClick={() => setOpenMenuId(null)}
                           />
@@ -213,7 +213,7 @@ export default function CommentSection({ movieId }: Props) {
                               }}
                               className="w-full text-left px-3 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white flex items-center gap-2"
                             >
-                              <Edit2 className="w-3 h-3" /> Edit
+                              <Edit2 className="w-3 h-3 cursor-pointer" /> Edit
                             </button>
                             <button
                               onClick={() => {
@@ -222,7 +222,7 @@ export default function CommentSection({ movieId }: Props) {
                               }}
                               className="w-full text-left px-3 py-2 text-xs text-red-500/70 hover:bg-red-500/10 hover:text-red-500 flex items-center gap-2"
                             >
-                              <Trash2 className="w-3 h-3" /> Delete
+                              <Trash2 className="w-3 h-3 cursor-pointer" /> Delete
                             </button>
                           </div>
                         </>
@@ -230,7 +230,7 @@ export default function CommentSection({ movieId }: Props) {
                     </div>
                   )}
                 </div>
-                
+
                 {editingCommentId === comment.id ? (
                   <div className="mt-2">
                     <textarea
