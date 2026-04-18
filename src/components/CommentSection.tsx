@@ -67,32 +67,60 @@ export default function CommentSection({ movieId }: Props) {
   async function handleUpdate(commentId: string) {
     if (!user || !editContent.trim()) return
 
-    const { error } = await supabase
-      .from('comments')
-      .update({ content: editContent.trim() })
-      .eq('id', commentId)
-      .eq('user_id', user.id)
+    // Optimistic update
+    const previousComments = [...comments];
+    setComments(comments.map(c => 
+      c.id === commentId ? { ...c, content: editContent.trim() } : c
+    ));
+    setEditingCommentId(null);
 
-    if (!error) {
-      setEditingCommentId(null)
-      loadComments()
-    } else {
-      console.error("Error updating comment:", error)
+    try {
+      const { error, data } = await supabase
+        .from('comments')
+        .update({ content: editContent.trim() })
+        .eq('id', commentId)
+        .eq('user_id', user.id)
+        .select();
+
+      if (error) throw error;
+      
+      if (!data || data.length === 0) {
+        setComments(previousComments);
+        alert("Failed to update comment. Please check your Supabase UPDATE policy.");
+      }
+    } catch (err) {
+      console.error("Error updating comment:", err);
+      setComments(previousComments);
+      alert("Error updating comment.");
     }
   }
 
   async function handleDelete(commentId: string) {
     if (!user) return
-    const { error } = await supabase
-      .from('comments')
-      .delete()
-      .eq('id', commentId)
-      .eq('user_id', user.id)
-    
-    if (!error) {
-      loadComments()
-    } else {
-      console.error("Error deleting comment:", error)
+
+    // Optimistic update
+    const previousComments = [...comments];
+    setComments(comments.filter(c => c.id !== commentId));
+
+    try {
+      const { error, data } = await supabase
+        .from('comments')
+        .delete()
+        .eq('id', commentId)
+        .eq('user_id', user.id)
+        .select();
+      
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        // Rollback if 0 rows were deleted (likely RLS policy missing)
+        setComments(previousComments);
+        alert("Failed to delete comment. You may need to add a DELETE policy in Supabase.");
+      }
+    } catch (err) {
+      console.error("Error deleting comment:", err);
+      setComments(previousComments);
+      alert("Error deleting comment.");
     }
   }
 
