@@ -6,6 +6,7 @@ import { Trash2, Star, Film } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { posterUrl } from '@/lib/tmdb'
 import type { WatchlistItem, Rating } from '@/types'
+import { error } from 'console'
 
 interface Props {
   watchlist: WatchlistItem[]
@@ -21,8 +22,12 @@ export default function WatchlistClient({ watchlist: initial, ratings, userId }:
   const ratingMap = Object.fromEntries(ratings.map(r => [r.movie_id, r.score]))
 
   async function removeFromWatchlist(movieId: number) {
-    await supabase.from('watchlist').delete().eq('user_id', userId).eq('movie_id', movieId)
-    setWatchlist(prev => prev.filter(w => w.movie_id !== movieId))
+    await supabase
+    .from('watchlist')
+    .delete()
+    .eq('user_id', userId)
+    .eq('movie_id', movieId)
+    if(error) console.error('Error DEtail: ', error)
   }
 
   const items = activeTab === 'watchlist' ? watchlist : ratings
@@ -86,8 +91,8 @@ export default function WatchlistClient({ watchlist: initial, ratings, userId }:
             return (
               <div key={item.id} className="group relative rounded-lg overflow-hidden border border-white/6 bg-[#161616]">
                 {poster
-                  ? <img src={poster} alt={item.movie_title} className="w-full aspect-[2/3] object-cover" />
-                  : <div className="w-full aspect-[2/3] bg-[#1e1e1e] flex items-center justify-center text-white/20 font-display text-sm p-3 text-center">{item.movie_title.toUpperCase()}</div>
+                  ? <img src={poster} alt={item.movie_title} className="w-full aspect-2/3 object-cover" />
+                  : <div className="w-full aspect-2/3 bg-[#1e1e1e] flex items-center justify-center text-white/20 font-display text-sm p-3 text-center">{item.movie_title.toUpperCase()}</div>
                 }
                 {/* Overlay on hover */}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
@@ -114,8 +119,8 @@ export default function WatchlistClient({ watchlist: initial, ratings, userId }:
             return (
               <div key={item.id} className="rounded-lg overflow-hidden border border-white/6 bg-[#161616]">
                 {poster
-                  ? <img src={poster} alt={item.movie_title} className="w-full aspect-[2/3] object-cover" />
-                  : <div className="w-full aspect-[2/3] bg-[#1e1e1e] flex items-center justify-center text-white/20 font-display text-sm p-3 text-center">{item.movie_title.toUpperCase()}</div>
+                  ? <img src={poster} alt={item.movie_title} className="w-full aspect-2/3 object-cover" />
+                  : <div className="w-full aspect-2/3 bg-[#1e1e1e] flex items-center justify-center text-white/20 font-display text-sm p-3 text-center">{item.movie_title.toUpperCase()}</div>
                 }
                 <div className="p-2.5">
                   <p className="text-xs font-medium text-white/80 truncate">{item.movie_title}</p>

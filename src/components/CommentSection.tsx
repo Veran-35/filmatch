@@ -236,7 +236,7 @@ export default function CommentSection({ movieId }: Props) {
                     <textarea
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:outline-none focus:border-amber-400/50 resize-y min-h-[60px]"
+                      className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:outline-none focus:border-amber-400/50 resize-y min-h-15"
                     />
                     <div className="flex justify-end gap-2 mt-2">
                       <button

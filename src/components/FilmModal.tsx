@@ -122,7 +122,7 @@ export default function FilmModal({ movieId, onClose }: Props) {
               <div className="mb-5">
                 <StarRating movieId={movie.id} movieTitle={movie.title} />
               </div>
-
+              
               {/* Actions */}
               <div className="flex flex-wrap items-center gap-3">
                 {trailer && (
